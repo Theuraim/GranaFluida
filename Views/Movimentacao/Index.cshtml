@@ -1,0 +1,81 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@model IEnumerable<GranaFluida.Models.Movimentacoes>
+
+@{
+    ViewData["Title"] = $"Movimentações de: {@HttpContextAccessor.HttpContext.Session.GetString("UsuarioNome")}";
+    Layout = "_Layout";
+    var fixas = Model.Where(m => m.FIXA && m.IDUSUARIO == @HttpContextAccessor.HttpContext.Session.GetInt32("IDUSUARIO")).OrderBy(m => m.DATAMOVIMENTACAO).ToList();
+    var naoFixas = Model.Where(m => !m.FIXA && m.IDUSUARIO == @HttpContextAccessor.HttpContext.Session.GetInt32("IDUSUARIO"))
+                        .GroupBy(m => new { m.DATAMOVIMENTACAO.Year, m.DATAMOVIMENTACAO.Month })
+                        .OrderByDescending(g => g.Key.Year)
+                        .ThenByDescending(g => g.Key.Month)
+                        .ToList();
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Movimentações de : @HttpContextAccessor.HttpContext.Session.GetString("UsuarioNome")</h2>
+
+    <!-- Movimentações fixas -->
+    @if (fixas.Any())
+    {
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <strong>Movimentações Fixas</strong>
+            </div>
+            <ul class="list-group list-group-flush">
+                @foreach (var item in fixas)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="badge bg-info me-2">Fixa</span>
+                            <strong>@item.DESCRICAOMOVIMENTACAO</strong> <br />
+                            <small>@item.DATAMOVIMENTACAO.ToString("dd/MM/yyyy")</small>
+                        </div>
+                        <div>
+                            <span class="text-@(item.TIPOMOVIMENTACAO == "Entrada" ? "success" : "danger") fw-bold">
+                                R$ @item.VALORMOVIMENTADO.ToString("N2")
+                            </span>
+                        </div>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@item.IDMOVIMENTACAO" class="btn btn-sm btn-warning">Editar</a>
+                            <a asp-action="Delete" asp-route-id="@item.IDMOVIMENTACAO" class="btn btn-sm btn-danger">Excluir</a>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+    <!-- Movimentações por mês -->
+    @foreach (var grupo in naoFixas)
+    {
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-secondary text-white">
+                <strong>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(grupo.Key.Month)</strong> de @grupo.Key.Year
+            </div>
+            <ul class="list-group list-group-flush">
+                @foreach (var item in grupo)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>@item.DESCRICAOMOVIMENTACAO</strong> <br />
+                            <small>@item.DATAMOVIMENTACAO.ToString("dd/MM/yyyy")</small>
+                        </div>
+                        <div>
+                            <span class="text-@(item.TIPOMOVIMENTACAO == "Entrada" ? "success" : "danger") fw-bold">
+                                R$ @item.VALORMOVIMENTADO.ToString("N2")
+                            </span>
+                        </div>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@item.IDMOVIMENTACAO" class="btn btn-sm btn-warning">Editar</a>
+                            <a asp-action="Delete" asp-route-id="@item.IDMOVIMENTACAO" class="btn btn-sm btn-danger">Excluir</a>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+    <a asp-action="Create" class="btn btn-success mt-3">Nova Movimentação</a>
+</div>

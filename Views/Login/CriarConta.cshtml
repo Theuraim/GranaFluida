@@ -1,0 +1,69 @@
+﻿@model GranaFluida.Models.Usuarios
+
+@{
+    ViewData["Title"] = "Cadastro de Usuário";
+    Layout = "_Layout";
+}
+
+<div class="d-flex align-items-center justify-content-center vh-100">
+    <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%;">
+        <h3 class="text-center mb-4">Cadastro</h3>
+
+        @using (Html.BeginForm("CriarConta", "Login", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.NOMEUSUARIO, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.NOMEUSUARIO, new { @class = "form-control", placeholder = "Nome de usuário" })
+                @Html.ValidationMessageFor(m => m.NOMEUSUARIO, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.NOMECOMPLETO, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.NOMECOMPLETO, new { @class = "form-control", placeholder = "Nome completo" })
+                @Html.ValidationMessageFor(m => m.NOMECOMPLETO, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.SENHA, new { @class = "form-label" })
+                @Html.PasswordFor(m => m.SENHA, new { @class = "form-control", placeholder = "Senha" })
+                @Html.ValidationMessageFor(m => m.SENHA, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.EMAIL, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.EMAIL, new { @class = "form-control", placeholder = "E-mail" })
+                @Html.ValidationMessageFor(m => m.EMAIL, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.ENDERECO, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.ENDERECO, new { @class = "form-control", placeholder = "Endereço" })
+                @Html.ValidationMessageFor(m => m.ENDERECO, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.CIDADE, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.CIDADE, new { @class = "form-control", placeholder = "Cidade" })
+                @Html.ValidationMessageFor(m => m.CIDADE, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-4">
+                @Html.LabelFor(m => m.ESTADO, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.ESTADO, new { @class = "form-control", placeholder = "Estado" })
+                @Html.ValidationMessageFor(m => m.ESTADO, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-success btn-block">Cadastrar</button>
+            </div>
+        }
+
+        <div class="text-center mt-3">
+            <span>Já possui conta? </span>
+            <a href="@Url.Action("Index", "Home")">Faça login</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+﻿@model GranaFluida.Models.Movimentacoes
+
+@{
+    ViewData["Title"] = "Nova Movimentação";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h3 class="text-center mb-4">Cadastrar Movimentação</h3>
+
+        @using (Html.BeginForm("Edit", "Movimentacao", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @Html.HiddenFor(m => m.IDMOVIMENTACAO)
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.DESCRICAOMOVIMENTACAO, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.DESCRICAOMOVIMENTACAO, new { @class = "form-control", placeholder = "Ex: Aluguel, Compras" })
+                @Html.ValidationMessageFor(m => m.DESCRICAOMOVIMENTACAO, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.VALORMOVIMENTADO, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.VALORMOVIMENTADO, new { @class = "form-control", placeholder = "Ex: 250.00" })
+                @Html.ValidationMessageFor(m => m.VALORMOVIMENTADO, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.DATAMOVIMENTACAO, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.DATAMOVIMENTACAO, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                @Html.ValidationMessageFor(m => m.DATAMOVIMENTACAO, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.TIPOMOVIMENTACAO, new { @class = "form-label" })
+                @Html.DropDownListFor(m => m.TIPOMOVIMENTACAO,
+                new SelectList(new[] { "Entrada", "Saída" }),
+                        "-- Selecione --",
+                        new { @class = "form-select" })
+            @Html.ValidationMessageFor(m => m.TIPOMOVIMENTACAO, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-check mb-3">
+            @Html.CheckBoxFor(m => m.FIXA, new { @class = "form-check-input", value = "1" })
+            @Html.LabelFor(m => m.FIXA, new { @class = "form-check-label" })
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-success">Salvar</button>
+        </div>
+                }
+    </div>
+</div>

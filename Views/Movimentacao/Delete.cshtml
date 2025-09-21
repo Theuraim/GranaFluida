@@ -1,0 +1,41 @@
+﻿@model GranaFluida.Models.Movimentacoes
+
+@{
+    ViewData["Title"] = "Excluir Movimentação";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h3 class="text-danger text-center">Excluir Movimentação</h3>
+        <p class="text-center">Tem certeza que deseja excluir esta movimentação?</p>
+
+        <dl class="row">
+            <dt class="col-sm-4">Valor</dt>
+            <dd class="col-sm-8">R$ @Model.DESCRICAOMOVIMENTACAO</dd>
+
+            <dt class="col-sm-4">Valor</dt>
+            <dd class="col-sm-8">R$ @Model.VALORMOVIMENTADO</dd>
+
+            <dt class="col-sm-4">Data</dt>
+            <dd class="col-sm-8">@Model.DATAMOVIMENTACAO.ToString("dd/MM/yyyy")</dd>
+
+            <dt class="col-sm-4">Tipo</dt>
+            <dd class="col-sm-8">@Model.TIPOMOVIMENTACAO</dd>
+
+            <dt class="col-sm-4">Fixa?</dt>
+            <dd class="col-sm-8">@(Model.FIXA? "Sim" : "Não")</dd>
+        </dl>
+
+        @using (Html.BeginForm("DeleteConfirmed", "Movimentacao", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.IDMOVIMENTACAO)
+
+            <div class="d-flex justify-content-between">
+                <a class="btn btn-secondary" href="@Url.Action("Index")">Cancelar</a>
+                <button type="submit" class="btn btn-danger">Excluir</button>
+            </div>
+        }
+    </div>
+</div>
