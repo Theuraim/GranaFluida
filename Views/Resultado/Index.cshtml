@@ -1,0 +1,121 @@
+﻿@{
+    ViewData["Title"] = "Resultados";
+    var top3 = ViewBag.Top3 as List<GranaFluida.Models.Movimentacoes>;
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Resultados</h2>
+
+    <!-- 🔹 Filtro de Período -->
+    <form asp-action="Index" method="get" class="row g-3 mb-4 justify-content-center">
+        <div class="col-auto">
+            <label for="dataInicio" class="form-label">Data Início</label>
+            <input type="date" id="dataInicio" name="dataInicio" value="@ViewBag.DataInicio" class="form-control" />
+        </div>
+        <div class="col-auto">
+            <label for="dataFim" class="form-label">Data Fim</label>
+            <input type="date" id="dataFim" name="dataFim" value="@ViewBag.DataFim" class="form-control" />
+        </div>
+        <div class="col-auto d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </div>
+    </form>
+
+    <!-- 🔹 Gráficos -->
+    <div class="row">
+        <div class="col-md-6">
+            <canvas id="graficoEntradasSaidas"></canvas>
+        </div>
+        <div class="col-md-6">
+            <canvas id="graficoPorDescricao"></canvas>
+        </div>
+    </div>
+
+    <hr class="my-5" />
+
+    <!-- 🔹 Top 3 + Resumo -->
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Top 3 Movimentações</h4>
+            <ul class="list-group">
+                @foreach (var mov in top3)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="badge @(mov.TIPOMOVIMENTACAO == "Entrada" ? "bg-success" : "bg-danger") me-2">
+                                @mov.TIPOMOVIMENTACAO
+                            </span>
+                            <strong>@mov.DESCRICAOMOVIMENTACAO</strong>
+                        </div>
+                        <span class="@(mov.TIPOMOVIMENTACAO == "Entrada" ? "text-success" : "text-danger")">
+                            R$ @mov.VALORMOVIMENTADO.ToString("N2")
+                        </span>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="col-md-6">
+            <h4>Resumo</h4>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <strong>Total de Entradas:</strong>
+                    <span class="text-success">R$ @ViewBag.Entradas.ToString("N2")</span>
+                </li>
+                <li class="list-group-item">
+                    <strong>Total de Saídas:</strong>
+                    <span class="text-danger">R$ @ViewBag.Saidas.ToString("N2")</span>
+                </li>
+                <li class="list-group-item">
+                    <strong>Valor economizado: </strong>
+                    <span class="@(ViewBag.Restante >= 0 ? "text-success" : "text-danger")">
+                        R$ @ViewBag.Restante.ToString("N2")
+                    </span>
+                </li>
+                @if (ViewBag.ValorMeta > 0)
+                {
+                    <li class="list-group-item">
+                        <strong>Meta Atual:</strong>
+                        <span class="text-info">R$ @ViewBag.ValorMeta.ToString("N2")</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Falta para atingir a meta:</strong>
+                        <span class="@(ViewBag.FaltaParaMeta > 0 ? "text-danger" : "text-success")">
+                            R$ @ViewBag.FaltaParaMeta.ToString("N2")
+                        </span>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var dadosEntradasSaidas = @Html.Raw(ViewBag.DadosEntradasSaidas);
+        var dadosPorDescricao = @Html.Raw(ViewBag.DadosPorDescricao);
+
+        new Chart(document.getElementById("graficoEntradasSaidas"), {
+            type: "pie",
+            data: {
+                labels: dadosEntradasSaidas.map(d => d.label),
+                datasets: [{
+                    data: dadosEntradasSaidas.map(d => d.value),
+                    backgroundColor: ["#28a745", "#dc3545"]
+                }]
+            }
+        });
+
+        new Chart(document.getElementById("graficoPorDescricao"), {
+            type: "pie",
+            data: {
+                labels: dadosPorDescricao.map(d => d.label),
+                datasets: [{
+                    data: dadosPorDescricao.map(d => d.value),
+                    backgroundColor: ["#007bff", "#ffc107", "#17a2b8", "#6f42c1", "#20c997"]
+                }]
+            }
+        });
+    </script>
+}

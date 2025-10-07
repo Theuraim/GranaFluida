@@ -1,0 +1,47 @@
+﻿@model GranaFluida.Models.Metas
+
+@{
+    ViewData["Title"] = "Editar Meta";
+}
+
+<div class="container mt-4">
+    <h2>Editar Meta</h2>
+
+    <form asp-action="Edit" method="post" class="mt-3">
+        <input type="hidden" asp-for="IDMETA" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="DESCRICAOMETA" class="form-label"></label>
+            <input asp-for="DESCRICAOMETA" class="form-control" />
+            <span asp-validation-for="DESCRICAOMETA" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="VALORMETA" class="form-label"></label>
+            <input asp-for="VALORMETA" class="form-control" />
+            <span asp-validation-for="VALORMETA" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DATAFINALMETA" class="form-label"></label>
+            <input asp-for="DATAFINALMETA" class="form-control" type="date" />
+            <span asp-validation-for="DATAFINALMETA" class="text-danger"></span>
+        </div>
+
+        <div class="form-check mb-3">
+            <input asp-for="ATIVA" class="form-check-input" />
+            <label asp-for="ATIVA" class="form-check-label"></label>
+        </div>
+
+        @* <div class="mb-3">
+            <label asp-for="IDUSUARIO" class="form-label"></label>
+            <input asp-for="IDUSUARIO" class="form-control" />
+            <span asp-validation-for="IDUSUARIO" class="text-danger"></span>
+        </div> *@
+
+        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>

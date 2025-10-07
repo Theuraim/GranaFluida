@@ -20,6 +20,7 @@ namespace GranaFluida.Models
         [Required(ErrorMessage = "Campo Obrigatório!")]
         [Display(Name = "Valor Movimentado")]
         public float VALORMOVIMENTADO { get; set; }
+
         //DATAMOVIMENTACAO
         [Required(ErrorMessage = "Campo Obrigatório!")]
         [Display(Name = "Data da Movimentação")]

@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+//using System.Data.Entity;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 
 namespace GranaFluida.Controllers
 {
@@ -19,31 +22,52 @@ namespace GranaFluida.Controllers
         // GET: Movimentacao
         public IActionResult Index()
         {
-            var movimentacoes = db.Movimentacao
-                                   .Include(m => m.Usuario)
-                                   .Where(m => m.IDUSUARIO == HttpContext.Session.GetInt32("IDUSUARIO"))
-                                   .ToList();
-            return View(movimentacoes);
+            if ((HttpContext.Session.GetInt32("UsuarioLogado") != 1))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                var movimentacoes = db.Movimentacao
+                                           .Include(m => m.Usuario)
+                                           .Where(m => m.IDUSUARIO == HttpContext.Session.GetInt32("IDUSUARIO"))
+                                           .ToList();
+                        return View(movimentacoes);
+            }
         }
 
         // GET: Movimentacao/Details/5
         public IActionResult Details(int? id)
         {
-            if (id == null) return NotFound();
+            if ((HttpContext.Session.GetInt32("UsuarioLogado") != 1))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                if (id == null) return NotFound();
 
-            var movimentacao = db.Movimentacao
-                                 .Include(m => m.Usuario)
-                                 .FirstOrDefault(m => m.IDMOVIMENTACAO == id);
+                var movimentacao = db.Movimentacao
+                                     .Include(m => m.Usuario)
+                                     .FirstOrDefault(m => m.IDMOVIMENTACAO == id);
 
-            if (movimentacao == null) return NotFound();
+                if (movimentacao == null) return NotFound();
 
-            return View(movimentacao);
+                return View(movimentacao);
+            }
         }
 
         // GET: Movimentacao/Create
         public IActionResult Create()
         {
-            return View();
+            if ((HttpContext.Session.GetInt32("UsuarioLogado") != 1))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         // POST: Movimentacao/Create
@@ -69,12 +93,19 @@ namespace GranaFluida.Controllers
         // GET: Movimentacao/Edit/5
         public IActionResult Edit(int? id)
         {
-            if (id == null) return NotFound();
+            if ((HttpContext.Session.GetInt32("UsuarioLogado") != 1))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                if (id == null) return NotFound();
 
-            var movimentacao = db.Movimentacao.Find(id);
-            if (movimentacao == null) return NotFound();
+                var movimentacao = db.Movimentacao.Find(id);
+                if (movimentacao == null) return NotFound();
 
-            return View(movimentacao);
+                return View(movimentacao);
+            }
         }
 
         // POST: Movimentacao/Edit/5
@@ -90,6 +121,7 @@ namespace GranaFluida.Controllers
             {
                 try
                 {
+                    movimentacao.DATAMOVIMENTACAO = DateTime.SpecifyKind(movimentacao.DATAMOVIMENTACAO, DateTimeKind.Utc);
                     db.Update(movimentacao);
                     db.SaveChanges();
                 }
@@ -108,14 +140,21 @@ namespace GranaFluida.Controllers
         // GET: Movimentacao/Delete/5
         public IActionResult Delete(int? id)
         {
-            if (id == null) return NotFound();
+            if ((HttpContext.Session.GetInt32("UsuarioLogado") != 1))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                if (id == null) return NotFound();
 
-            var movimentacao = db.Movimentacao
-                                 .Include(m => m.Usuario)
-                                 .FirstOrDefault(m => m.IDMOVIMENTACAO == id);
-            if (movimentacao == null) return NotFound();
+                var movimentacao = db.Movimentacao
+                                     .Include(m => m.Usuario)
+                                     .FirstOrDefault(m => m.IDMOVIMENTACAO == id);
+                if (movimentacao == null) return NotFound();
 
-            return View(movimentacao);
+                return View(movimentacao);
+            }
         }
 
         // POST: Movimentacao/Delete/5

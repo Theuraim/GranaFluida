@@ -1,0 +1,33 @@
+﻿@model GranaFluida.Models.Metas
+
+@{
+    ViewData["Title"] = "Excluir Meta";
+}
+
+<div class="container mt-4">
+    <h2>Excluir Meta</h2>
+
+    <div class="alert alert-danger mt-3">
+        Tem certeza que deseja excluir esta meta?
+    </div>
+
+    <dl class="row mt-3">
+        <dt class="col-sm-3">Descrição</dt>
+        <dd class="col-sm-9">@Model.DESCRICAOMETA</dd>
+
+        <dt class="col-sm-3">Valor</dt>
+        <dd class="col-sm-9">@Model.VALORMETA.ToString("C")</dd>
+
+        <dt class="col-sm-3">Data Final</dt>
+        <dd class="col-sm-9">@Model.DATAFINALMETA.ToShortDateString()</dd>
+
+        <dt class="col-sm-3">Ativa</dt>
+        <dd class="col-sm-9">@(Model.ATIVA ? "Sim" : "Não")</dd>
+    </dl>
+
+    <form asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" asp-for="IDMETA" />
+        <button type="submit" class="btn btn-danger">Excluir</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<GranaFluida.Models.Metas>
+
+@{
+    ViewData["Title"] = "Metas";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Metas Cadastradas</h2>
+
+    <p>
+        <a asp-action="Create" class="btn btn-success">+ Nova Meta</a>
+    </p>
+
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Data Final</th>
+                <th>Ativa</th>
+                <th>Usuário</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.DESCRICAOMETA</td>
+                    <td>@item.VALORMETA.ToString("C")</td>
+                    <td>@item.DATAFINALMETA.ToShortDateString()</td>
+                    <td>
+                        @if (item.ATIVA)
+                        {
+                            <span class="badge bg-success">Ativa</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Inativa</span>
+                        }
+                    </td>
+                    <td>@item.Usuario?.NOMEUSUARIO</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.IDMETA" class="btn btn-warning btn-sm">Editar</a>
+                        @* <a asp-action="Details" asp-route-id="@item.IDMETA" class="btn btn-info btn-sm">Detalhes</a> *@
+                        <a asp-action="Delete" asp-route-id="@item.IDMETA" class="btn btn-danger btn-sm">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

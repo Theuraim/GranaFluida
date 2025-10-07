@@ -9,5 +9,7 @@ namespace GranaFluida.Models
         public DbSet<Usuarios> Usuario { get; set; }
 
         public DbSet<Movimentacoes> Movimentacao { get; set; }
+
+        public DbSet<Metas> Meta { get; set; }
     }
 }
