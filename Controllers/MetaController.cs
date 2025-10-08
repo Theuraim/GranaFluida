@@ -69,6 +69,9 @@ namespace GranaFluida.Controllers
             ModelState.Remove("Usuario");
             ModelState.Remove("IDUSUARIO");
 
+            meta.DATACADASTRO = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
+            ModelState.Remove("DATACADASTRO");
+
             if (ModelState.IsValid)
             {
                 if (meta.ATIVA)
@@ -86,6 +89,7 @@ namespace GranaFluida.Controllers
 
 
                 meta.DATAFINALMETA = DateTime.SpecifyKind(meta.DATAFINALMETA, DateTimeKind.Utc);
+               
                 db.Add(meta);
                 await db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -123,6 +127,9 @@ namespace GranaFluida.Controllers
             meta.IDUSUARIO = HttpContext.Session.GetInt32("IDUSUARIO");
             ModelState.Remove("Usuario");
             ModelState.Remove("IDUSUARIO");
+
+            meta.DATACADASTRO = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
+            ModelState.Remove("DATACADASTRO");
 
             if (ModelState.IsValid)
             {

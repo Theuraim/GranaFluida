@@ -6,34 +6,39 @@
 }
 
 <div class="d-flex align-items-center justify-content-center vh-100">
-    <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%;">
-        <h3 class="text-center mb-4">Login</h3>
+    <!-- Moldura azul pastel -->
+    <div class="p-5 rounded-4 shadow-sm" style="background-color: #cfe8ff; width: 80%; max-width: 600px;">
 
-        @using (Html.BeginForm("Login", "Login", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <!-- Card de login -->
+        <div class="card shadow-lg p-4 border-0 rounded-4" style="background-color: #ffffff;">
+            <h3 class="text-center mb-4 text-dark">Login</h3>
 
-            <div class="form-group mb-3">
-                @Html.LabelFor(m => m.NOMEUSUARIO, new { @class = "form-label" })
-                @Html.TextBoxFor(m => m.NOMEUSUARIO, new { @class = "form-control", placeholder = "E-mail" })
-                @Html.ValidationMessageFor(m => m.NOMEUSUARIO, "", new { @class = "text-danger" })
+            @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.NOMEUSUARIO, new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(m => m.NOMEUSUARIO, new { @class = "form-control rounded-3 border-0 shadow-sm", placeholder = "E-mail" })
+                    @Html.ValidationMessageFor(m => m.NOMEUSUARIO, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group mb-4">
+                    @Html.LabelFor(m => m.SENHA, new { @class = "form-label fw-bold" })
+                    @Html.PasswordFor(m => m.SENHA, new { @class = "form-control rounded-3 border-0 shadow-sm", placeholder = "Senha" })
+                    @Html.ValidationMessageFor(m => m.SENHA, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-block rounded-3 shadow-sm">Entrar</button>
+                </div>
+            }
+
+            <div class="text-center mt-3">
+                <span>Não tem conta?</span>
+                <a href="@Url.Action("CriarConta", "Login")" class="fw-bold text-decoration-none text-primary"> Cadastre-se aqui</a>
             </div>
-
-            <div class="form-group mb-4">
-                @Html.LabelFor(m => m.SENHA, new { @class = "form-label" })
-                @Html.PasswordFor(m => m.SENHA, new { @class = "form-control", placeholder = "Senha" })
-                @Html.ValidationMessageFor(m => m.SENHA, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary btn-block">Entrar</button>
-            </div>
-        }
-
-        <div class="text-center mt-3">
-            <span>Não tem conta? </span>
-            <a href="@Url.Action("CriarConta", "Login")">Cadastre-se aqui</a>
         </div>
     </div>
 </div>

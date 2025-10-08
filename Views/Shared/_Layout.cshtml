@@ -1,10 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - GranaFluida</title>
     <script type="importmap"></script>
+    <link rel="icon" href="~/img/realbr.png" type="image/png">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/GranaFluida.styles.css" asp-append-version="true" />
@@ -33,7 +37,7 @@
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">GranaFluida</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> 🪙GranaFluida</a>
 
                 <!-- Sempre visível -->
                 <button class="navbar-toggler d-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral" aria-controls="menuLateral">
@@ -61,6 +65,26 @@
                     <a href="@Url.Action("Index", "Meta")" class="btn btn-info w-100 text-white">💸 Meta</a>
                 </li>
             </ul>
+            @if (@HttpContextAccessor.HttpContext.Session.GetInt32("UsuarioLogado") == 1)
+            {
+                <!-- Rodapé com informações do usuário -->
+                <div class="border-top pt-3 text-center">
+                    <div class="d-flex align-items-center justify-content-center mb-2">
+                        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                             alt="Usuário"
+                             class="rounded-circle me-2"
+                             style="width: 40px; height: 40px;">
+                        <div>
+                            <strong>@HttpContextAccessor.HttpContext.Session.GetString("UsuarioNome")</strong><br />
+                            <small class="text-muted">Usuário logado</small>
+                        </div>
+                    </div>
+
+                    <a href="@Url.Action("Logout", "Login")" class="btn btn-outline-danger btn-sm w-75">
+                        <i class="bi bi-box-arrow-right"></i> Sair
+                    </a>
+                </div>
+            }
         </div>
     </div>
 

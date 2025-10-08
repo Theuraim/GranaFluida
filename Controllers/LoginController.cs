@@ -75,5 +75,14 @@ namespace GranaFluida.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.SetInt32("IDUSUARIO", -1);
+            HttpContext.Session.SetString("UsuarioNome", String.Empty);
+            HttpContext.Session.SetInt32("UsuarioLogado", 0);
+            return RedirectToAction("Index", "Login");
+        }
+
     }
 }
